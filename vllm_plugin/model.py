@@ -72,7 +72,11 @@ def _ffmpeg_load_file(filepath) -> tuple[np.ndarray, int]:
     return audio, sr
 
 # Register FFmpeg-based audio loader
-import vllm.multimodal.audio as _vllm_audio_module
+try:
+    import vllm.multimodal.media.audio as _vllm_audio_module
+except ImportError:
+    import vllm.multimodal.audio as _vllm_audio_module
+
 _OriginalAudioMediaIO = _vllm_audio_module.AudioMediaIO
 
 class _PatchedAudioMediaIO(_OriginalAudioMediaIO):
